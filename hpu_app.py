@@ -4,7 +4,8 @@ import joblib
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import pandas as pd
-
+import tensorflow as tf
+from tensorflow.keras import backend as K
 # Page configuration
 st.set_page_config(
     page_title="HPU Maintenance Predictor",
@@ -17,7 +18,7 @@ st.set_page_config(
 @st.cache_resource
 def load_ann_resources():
     try:
-        model = load_model('ann_opt.h5')
+        model = load_model('ann_opt.h5',custom_objects={'mse':tf.keras.losses.MeanSquaredError()})
         scaler = joblib.load('scaler.pkl')
         return model, scaler, True
     except Exception as e:
